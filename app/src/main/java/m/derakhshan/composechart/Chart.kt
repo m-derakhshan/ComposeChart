@@ -152,11 +152,7 @@ fun Chart(
                 for (item in data) {
                     val topLeft = Offset(
                         x = spaceStep,
-                        y =
-                        when {
-                            size.height / item.value * barScale < size.height * 0.8 -> size.height - item.value * barScale
-                            else -> size.height - item.value * barScale - labelOffset
-                        }
+                        y = size.height - item.value * barScale - labelOffset
                     )
                     //--------------------(draw bars)--------------------//
                     drawRoundRect(
@@ -164,12 +160,7 @@ fun Chart(
                         topLeft = topLeft,
                         size = Size(
                             width = barWidth,
-                            height =
-                            when {
-                                size.height - topLeft.y - labelOffset > 0 -> size.height - topLeft.y - labelOffset
-                                size.height - topLeft.y == 0f -> 0f
-                                else -> item.value * barScale
-                            }
+                            height =size.height - topLeft.y - labelOffset
                         ),
                         cornerRadius = CornerRadius(barCornersRadius, barCornersRadius)
                     )
