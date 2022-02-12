@@ -75,7 +75,7 @@ fun Chart(
     val cardHeight by animateDpAsState(
         targetValue = if (isExpanded) height else 50.dp,
         animationSpec = tween(
-            1500,
+            1000,
             easing = LinearOutSlowInEasing
         )
     )
@@ -117,7 +117,7 @@ fun Chart(
             .fillMaxSize()
             .alpha(if (cardHeight < height) (cardHeight - 90.dp) / height else 1f)
             .padding(
-                top = 55.dp,
+                top = 65.dp,
                 bottom = 20.dp,
                 start = 30.dp,
                 end = 30.dp
@@ -130,7 +130,9 @@ fun Chart(
                         listSize = data.size,
                         itemWidth = barWidth
                     )
-                    chosenBarKey = data.toList()[chosenBar].first.toString()
+                    if (chosenBar >= 0) {
+                        chosenBarKey = data.toList()[chosenBar].first.toString()
+                    }
                 })
             },
             onDraw = {
@@ -150,23 +152,35 @@ fun Chart(
                 for (item in data) {
                     val topLeft = Offset(
                         x = spaceStep,
-                        y = size.height - item.value * barScale
+                        y =
+                        when {
+                            size.height / item.value * barScale < size.height * 0.8 -> size.height - item.value * barScale
+                            else -> size.height - item.value * barScale - labelOffset
+                        }
                     )
+                    //--------------------(draw bars)--------------------//
                     drawRoundRect(
                         color = barColor,
                         topLeft = topLeft,
                         size = Size(
                             width = barWidth,
-                            height = size.height - topLeft.y - labelOffset
+                            height =
+                            when {
+                                size.height - topLeft.y - labelOffset > 0 -> size.height - topLeft.y - labelOffset
+                                size.height - topLeft.y == 0f -> 0f
+                                else -> item.value * barScale
+                            }
                         ),
                         cornerRadius = CornerRadius(barCornersRadius, barCornersRadius)
                     )
+                    //--------------------(showing the x axis labels)--------------------//
                     drawContext.canvas.nativeCanvas.drawText(
                         item.key.toString(),
                         spaceStep + barWidth / 2,
                         size.height,
                         paint
                     )
+                    //--------------------(showing the bar label)--------------------//
                     if (chosenBarKey == item.key.toString()) {
                         val localLabelColor = Color(
                             ColorUtils.blendARGB(

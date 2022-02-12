@@ -41,13 +41,15 @@ class MainActivity : ComponentActivity() {
                     ) {
                         Chart(
                             data = mapOf(
-                                Pair("Jan", 10f),
+                                Pair("Jan", 4.0f),
                                 Pair("Feb", 5f),
-                                Pair("Mar", 5f),
-                                Pair("Apr", 5f),
-                                Pair("May", 5f),
-                                Pair("Jun", 15f),
-                                Pair("July", 15f),
+                                Pair("Mar", 6f),
+                                Pair("Apr", 7f),
+                                Pair("May", 8f),
+                                Pair("Jun", 9f),
+                                Pair("July", 10f),
+                                Pair("Aug", 11f),
+                                Pair("Sep", 19f),
                             ), height = 250.dp,
                             isExpanded = showChart,
                             bottomEndRadius = 30.dp,
